@@ -1,5 +1,5 @@
 from flask import request, Blueprint
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager
 
@@ -188,4 +188,25 @@ def updateq_v2():
 
     return {
         'update Response' : update_res
+    }
+
+
+#add action values to the action table
+
+@recommendation_api.route('/api/v2/recommendations/create_action', methods=['POST'])
+def create_action_v2():
+    data = request.get_json()
+    
+    action_no = data.get('action_no')
+    action_name = data.get('action_name')
+    ES_no_1 = data.get('ES_no_1')
+    ES_no_2 = data.get('ES_no_2')
+    action_no = int(action_no)
+    
+
+    create_res = create_action(action_no, action_name, ES_no_1, ES_no_2)
+    print(create_res)
+
+    return {
+        'create Response' : create_res
     }

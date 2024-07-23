@@ -88,6 +88,8 @@ def insert_action_data(document):
     collection.insert_one(document)
 
 
+
+
 #get all action data and return the action list in an array
     
 
@@ -104,3 +106,9 @@ def get_action_data():
         return action_list
     else:
         return None
+    
+
+
+
+            
+    
