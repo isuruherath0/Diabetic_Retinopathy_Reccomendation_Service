@@ -1,6 +1,6 @@
 from decimal import Decimal
 from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero
-from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data
+from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
 from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation
@@ -212,3 +212,8 @@ def create_action(action_no , action_name , ES_no_1 , ES_no_2):
             'message': str(e)
         }
     return response
+
+
+def get_all_actions():
+
+    return get_all_action_data()

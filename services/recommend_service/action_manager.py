@@ -1,6 +1,11 @@
+from services.recommend_service.mongodb_service import get_action_name
+
+
 def action_manager(action):
 
     action = int(action)
+
+    # return get_action_name(action)
 
 
     if action == 1:

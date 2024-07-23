@@ -90,25 +90,62 @@ def insert_action_data(document):
 
 
 
-#get all action data and return the action list in an array
+#get all action data when action _id is given
     
 
-def get_action_data():
+def get_action_data(action_id):
         
     client = MongoDbSingleton.get_instance()
     db = client['research_RL']
     collection = db['actiondata']
         
-    action_data = collection.find_one({"_id": "actiondata"})
+    action_data = collection.find_one({"_id": action_id})
+
         
     if action_data:
-        action_list = action_data.get('action_list')
-        return action_list
+        name = action_data.get('action_name')
+        es1 = action_data.get('expert_1')
+        es2 = action_data.get('expert 2')
+            
+        return name , es1 , es2
     else:
         return None
     
+# Get action name when action _id is given
+    
+def get_action_name(action_id):
+        
+        client = MongoDbSingleton.get_instance()
+        db = client['research_RL']
+        collection = db['actiondata']
+        
+        action_data = collection.find_one({"_id": action_id})
+        
+        if action_data:
+            name = action_data.get('action_name')
+            
+            return name
+        else:
+            return None
 
 
-
+#get all action data of all actions
+        
+def get_all_action_data():
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['actiondata']
+        
+    projection = {
+        'action_no': 1,
+        'action_name': 1,
+        'expert_1': 1,
+        'expert_2': 1
+    }
+    
+    action_data = collection.find({}, projection)
+    
+    return list(action_data)
             
     

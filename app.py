@@ -9,7 +9,7 @@ app.register_blueprint(recommendation_api)
 @app.route('/')
 def index():
 
-    return 'API is working!  ' 
+    return 'API is working! ' 
 
 if __name__ == '__main__':
     app.run(debug=True )
