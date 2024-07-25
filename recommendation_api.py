@@ -1,5 +1,5 @@
 from flask import request, Blueprint ,jsonify
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
 
@@ -322,3 +322,18 @@ def getrecommendation_v3():
         'action' : action
     
     }
+
+
+
+# Add new actions
+
+@recommendation_api.route('/api/v3/recommendations/create_action', methods=['POST'])
+def create_action_v3():
+    data = request.get_json()
+    
+    action_name = data.get('action_name')
+    states_array = data.get('states')
+
+    create_res = add_action_v3(action_name, states_array)
+
+    return create_res

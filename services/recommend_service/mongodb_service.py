@@ -224,3 +224,13 @@ def get_expert_1_data(state_id):
     else:
         return None
 
+
+#update action array when state _id is given and send response
+    
+def update_expert_1_data(state_id, action_array):
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['expert_1']
+
+    collection.update_one({"_id": state_id}, {"$set": {"action_array": action_array}})

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero ,insert_new_rows_in_all_tables ,update_q_in_all_tables
-from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data
+from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data ,update_expert_1_data ,get_expert_1_data
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
 from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation ,rule_based_reccomondation_v3 ,rule_based_approach_for_reccomondation_v3
@@ -328,6 +328,18 @@ def choose_action_v3(table_name, state):
     return action
 
 
+#update array on expert table
+
+def update_expert_1(stateno , action):
+
+    current_array = get_expert_1_data(stateno)
+    current_array.append(action)
+
+    update_expert_1_data(stateno , current_array)
+
+
+
+
 #add action v3
 
 def add_action_v3(action_name , state_arrray):
@@ -337,11 +349,14 @@ def add_action_v3(action_name , state_arrray):
     update_row_response = insert_new_rows_in_all_tables(state_list , action_no)
 
     for state in state_arrray:
-        update_q_in_all_tables(state , action_no , 0.9)
+        update_q_in_all_tables(state , action_no , Decimal('0.9'))
 
 
     mongo_response = create_action(action_no , action_name , state_arrray , state_arrray)
 
-#EXPERT TABLE ADD CONFIGURE - TODo
-    
-    
+
+    for state in state_arrray:
+        update_expert_1(state , action_no)
+
+    return { 'update_row_response' : update_row_response , 'mongo_response' : mongo_response}
+
