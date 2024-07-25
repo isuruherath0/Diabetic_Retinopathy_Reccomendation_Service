@@ -1,5 +1,5 @@
 from flask import request, Blueprint ,jsonify
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
 
@@ -259,4 +259,66 @@ def new_user_v3():
     return {
         'create Response' : create_res,
         'initialize response ' : init_res
+    }
+
+#add expert 1 data
+
+@recommendation_api.route('/api/v3/recommendations/add_expert_1', methods=['POST'])
+def add_expert_1():
+    data = request.get_json()
+    
+    state = data.get('state')
+    actions = data.get('actions')
+    
+    state = int(state)
+
+    create_res = add_expert_1_data(state, actions)
+    print(create_res)
+
+    return {
+        'create Response' : create_res
+    }
+
+
+#Get Reccmondation through state V3
+
+@recommendation_api.route('/api/v3/recommendations', methods=['GET'])
+def recommendation_v3():
+    user_id = request.args.get('user_id')
+    state = request.args.get('state')
+    action = choose_action_v3('qtable' + user_id, state)
+    print(action)
+
+    return  {
+        'activity' : action
+    }
+
+#Get Reccmondation through parameters V2
+
+@recommendation_api.route('/api/v3/recommendations/get', methods=['GET'])
+def getrecommendation_v3():
+    user_id = request.args.get('user_id')
+    vegetarian = request.args.get('vegetarian')
+    weight = request.args.get('weight')
+    height = request.args.get('height')
+    exersize_level = request.args.get('exersize_level')
+    meal = request.args.get('meal')
+
+
+    state = state_manager_v2(vegetarian, weight, height, exersize_level, meal)
+
+    print(state)
+
+
+    action = choose_action_v3('qtable' + user_id, state)
+    print(action)
+
+    recommendation = action_manager_v2(action)
+
+
+    return  {
+        'Recommended Meal ' : recommendation,
+        'state' : state,
+        'action' : action
+    
     }

@@ -1,3 +1,6 @@
+from services.recommend_service.mongodb_service import get_expert_1_data
+
+
 def rule_based_reccomondation (state) :
     if state == 1:  # breakfast non veg high cal
         return [8,5 ,3 , 10]
@@ -38,3 +41,36 @@ def rule_based_approach_for_reccomondation (state):
         return [2,3,5 ,9 ,6 ,13 ,1 ,11 ,9,5 ,13 ,15]
     elif state in (10,11,12):
         return [1 , 5 ,11 ,2 , 11 ,15 ,2 , 12 , 15]
+    
+
+def rule_based_reccomondation_v3 (state) :
+
+    actionarr = get_expert_1_data(state)
+
+    return actionarr
+
+
+#rule_based_approach_for_reccomondation
+    
+def rule_based_approach_for_reccomondation_v3 (state):
+
+    actionarr = []
+
+    if state in (1,2,3):
+
+        actionarr = get_expert_1_data(1) + get_expert_1_data(2) + get_expert_1_data(3)
+
+    elif state in (4,5,6):
+
+        actionarr = get_expert_1_data(4) + get_expert_1_data(5) + get_expert_1_data(6)
+        
+    elif state in (7,8,9):
+
+        actionarr = get_expert_1_data(7) + get_expert_1_data(8) + get_expert_1_data(9)
+
+    elif state in (10,11,12):
+        
+        actionarr = get_expert_1_data(10) + get_expert_1_data(11) + get_expert_1_data(12)
+
+    return actionarr
+    

@@ -194,4 +194,33 @@ def update_action_from_version(version_id, action):
 
     
 
+#insert Expert_1 data
     
+def insert_expert_1_data(document):
+
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['expert_1']
+
+    collection.insert_one(document)
+
+
+
+#get action array when state _id is given
+    
+def get_expert_1_data(state_id):
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['expert_1']
+        
+    expert_1_data = collection.find_one({"_id": state_id})
+
+    if expert_1_data:
+        action_array = expert_1_data.get('action_array')
+            
+        return action_array
+    
+    else:
+        return None
+

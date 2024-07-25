@@ -1,9 +1,9 @@
 from decimal import Decimal
 from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero
-from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version
+from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
-from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation
+from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation ,rule_based_reccomondation_v3 ,rule_based_approach_for_reccomondation_v3
 from services.recommend_service.value_manager import action_list , state_list ,action_list_v3
 import numpy as np
 
@@ -266,3 +266,62 @@ def add_version(version_no , states , actions):
             'message': str(e)
         }
     return response
+
+
+#add expert 1 data to the expert 1 table
+
+
+def add_expert_1_data(stateno , action_array):
+    
+        print('Creating  expert 1 table for state : ' + str(stateno))
+    
+        try:
+    
+            insert_expert_1_data({
+                "_id": stateno,
+                "action_array": action_array
+            })
+    
+    
+            print('Expert 1 data added')
+            response = {
+                'status': 'success',
+                'message': 'Expert 1 data Added'
+            }
+    
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'message': str(e)
+            }
+        return response
+
+
+#choose action v3
+
+def choose_action_v3(table_name, state):
+
+    userdata = get_user_data(table_name)
+
+    episodes = userdata[3]
+    episodes = int(episodes)
+    state = int(state)
+    print (episodes)
+
+    if episodes < 10:   #EXPLORE
+
+        if episodes < 4:
+             action_set = rule_based_reccomondation_v3(state)
+        
+        else :
+            action_set = rule_based_approach_for_reccomondation_v3(state)
+   
+        #get a random value from the action_set array
+
+        action = action_set[np.random.randint(0, len(action_set))]
+
+    else:  #EXPLOIT
+        action = get_action_with_max_q(table_name, state)
+
+    print(action)
+    return action
