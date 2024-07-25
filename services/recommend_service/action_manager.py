@@ -42,3 +42,8 @@ def action_manager(action):
         return "Invalid action"
     
 
+def action_manager_v2(action):
+
+    action = int(action)
+
+    return get_action_name(action)

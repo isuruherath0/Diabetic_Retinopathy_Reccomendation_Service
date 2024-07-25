@@ -1,7 +1,7 @@
 from flask import request, Blueprint ,jsonify
 from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
-from services.recommend_service.action_manager import action_manager
+from services.recommend_service.action_manager import action_manager , action_manager_v2
 
 
 recommendation_api = Blueprint('recommendation_api', __name__)
