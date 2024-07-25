@@ -351,12 +351,16 @@ def add_action_v3(action_name , state_arrray):
     for state in state_arrray:
         update_q_in_all_tables(state , action_no , Decimal('0.9'))
 
+    print ('tables updated with new action')
 
     mongo_response = create_action(action_no , action_name , state_arrray , state_arrray)
 
+    print('action created')
 
     for state in state_arrray:
         update_expert_1(state , action_no)
+
+    print('expert system updated')
 
     return { 'update_row_response' : update_row_response , 'mongo_response' : mongo_response}
 

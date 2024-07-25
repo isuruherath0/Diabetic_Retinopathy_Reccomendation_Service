@@ -151,18 +151,17 @@ def insert_new_rows_in_all_tables(state_list, action):
     print(action)
     dynamodb = get_dynamodb()
     table_list = dynamodb.tables.all()
-    print(table_list)
     for table in table_list:
         table_name = table.name
-        print(table_name)
+        print(" creating row in" + table_name)
         if table_name.startswith('qtable'):
             with table.batch_writer() as batch:
                 for state in state_list:
                     batch.put_item(
                         Item={
-                            'state': int(state),  # Ensure state is an int
-                            'action': int(action),  # Ensure action is an int
-                            'q': 0  # Set Q value to 0
+                            'state': int(state),  
+                            'action': int(action),  
+                            'q': 0  
                         }
                     )
     return 'New rows inserted in all tables'
@@ -177,6 +176,7 @@ def update_q_in_all_tables(state, action, new_q):
     table_list = dynamodb.tables.all()
     for table in table_list:
         table_name = table.name
+        print(" initializing" + table_name)
         if table_name.startswith('qtable'):
             update_q_value_in_q_table(table_name, state, action, new_q)
     return 'Q value updated in all tables'
