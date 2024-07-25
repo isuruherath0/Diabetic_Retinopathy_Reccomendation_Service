@@ -1,5 +1,5 @@
 from flask import request, Blueprint ,jsonify
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
 
@@ -219,3 +219,29 @@ def get_all_actions_v2():
     print(actions)
 
     return jsonify({'actions': actions})
+
+
+#v3
+
+#insert version
+
+@recommendation_api.route('/api/v3/recommendations/insert_version', methods=['POST'])
+def insert_version_v3():
+    
+    
+    version_no = request.args.get('version_no')
+    states = request.args.get('states')
+    actions = request.args.get('actions')
+
+    states = int(states)
+    actions = int(actions)
+
+
+    create_res = add_version(version_no, states, actions)
+    print(create_res)
+
+    return {
+        'create Response' : create_res
+    }
+
+

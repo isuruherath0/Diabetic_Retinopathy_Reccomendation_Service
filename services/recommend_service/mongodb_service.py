@@ -149,3 +149,49 @@ def get_all_action_data():
     return list(action_data)
             
     
+
+# Insert version data
+
+
+def insert_version(document):
+
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['version']
+
+    collection.insert_one(document)
+
+
+
+# get action value when version _id is given
+    
+def get_action_from_version(version_id):
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['version']
+        
+    version_data = collection.find_one({"_id": version_id})
+        
+    if version_data:
+        action = version_data.get('actions')
+            
+        return action
+    else:
+        return None
+    
+
+# update action value when version _id is given and send response
+    
+def update_action_from_version(version_id, action):
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['version']
+
+
+    collection.update_one({"_id": version_id}, {"$set": {"actions": action}})
+
+    
+
+    
