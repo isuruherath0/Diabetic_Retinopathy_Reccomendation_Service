@@ -140,3 +140,38 @@ def update_q_value_in_q_table(table_name, state, action, new_q):
 
     
     return response
+
+
+# insert new rows in all tables starting with the term "qtable" when given state array and an action value and setting q value of them to 0
+
+
+def insert_new_rows_in_all_tables(state_list, action):
+    dynamodb = get_dynamodb()
+    table_list = dynamodb.tables.all()
+    for table in table_list:
+        table_name = table.name
+        if table_name.startswith('qtable'):
+            with table.batch_writer() as batch:
+                for state in state_list:
+                    batch.put_item(
+                        Item={
+                            'state': state,
+                            'action': action,
+                            'q': 0
+                        }
+                    )
+    return 'New rows inserted in all tables'
+
+
+#update all q tables starting with the term "qtable" when state,action and q value is given
+
+
+def update_q_in_all_tables(state, action, new_q):
+    dynamodb = get_dynamodb()
+    table_list = dynamodb.tables.all()
+    for table in table_list:
+        table_name = table.name
+        if table_name.startswith('qtable'):
+            update_q_value_in_q_table(table_name, state, action, new_q)
+    return 'Q value updated in all tables'
+

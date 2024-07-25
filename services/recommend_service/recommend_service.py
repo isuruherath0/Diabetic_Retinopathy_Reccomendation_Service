@@ -1,10 +1,11 @@
 from decimal import Decimal
-from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero
+from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero ,insert_new_rows_in_all_tables ,update_q_in_all_tables
 from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
 from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation ,rule_based_reccomondation_v3 ,rule_based_approach_for_reccomondation_v3
 from services.recommend_service.value_manager import action_list , state_list ,action_list_v3
+from services.recommend_service.Controllers.next_action import next_action
 import numpy as np
 
 def choose_action(table_name, state):
@@ -325,3 +326,22 @@ def choose_action_v3(table_name, state):
 
     print(action)
     return action
+
+
+#add action v3
+
+def add_action_v3(action_name , state_arrray):
+
+    action_no = next_action()
+
+    update_row_response = insert_new_rows_in_all_tables(state_list , action_no)
+
+    for state in state_arrray:
+        update_q_in_all_tables(state , action_no , 0.9)
+
+
+    mongo_response = create_action(action_no , action_name , state_arrray , state_arrray)
+
+#EXPERT TABLE ADD CONFIGURE - TODo
+    
+    
