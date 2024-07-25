@@ -1,10 +1,10 @@
 from decimal import Decimal
 from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero
-from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version
+from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
 from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation
-from services.recommend_service.value_manager import action_list , state_list
+from services.recommend_service.value_manager import action_list , state_list ,action_list_v3
 import numpy as np
 
 def choose_action(table_name, state):
@@ -115,6 +115,26 @@ def init_table_v2(table_name):
             'message': str(e)
         }
     return response
+
+def init_table_v3(table_name):
+
+    print('Initializing table with name : ' + table_name)
+
+    try:
+        actionarr = action_list_v3()
+        table = init_dynamo_table_with_zero(table_name, state_list, actionarr)
+        table.wait_until_exists()
+        response = {
+            'status': 'success',
+            'message': 'Table ' + table_name + ' initialized'
+        }
+    except Exception as e:
+        response = {
+            'status': 'error',
+            'message': str(e)
+        }
+    return response
+
 
 
 

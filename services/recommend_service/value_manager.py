@@ -1,3 +1,5 @@
+from services.recommend_service.mongodb_service import get_all_action_data
+
 state_list = [
     1, #Breakfast, Non-Vegetarian, high calorie
     2, #Lunch, Non-Vegetarian, high calorie
@@ -31,3 +33,12 @@ action_list = [
     14, #Spicy BBq pork
     15, #Rice, soya meat and potatoes
 ]
+
+
+def action_list_v3():
+    actiondoc = get_all_action_data()
+    actionarr = []
+    for action in actiondoc:
+        actionarr.append(action.get('_id'))
+    return actionarr
+
