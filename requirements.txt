@@ -18,3 +18,4 @@ dnspython==2.6.1
 pymongo==4.7.0
 numpy==1.26.4
 python-dotenv==1.0.1
+gunicorn==23.0.0
