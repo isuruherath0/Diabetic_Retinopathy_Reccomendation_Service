@@ -1,5 +1,5 @@
 from flask import request, Blueprint ,jsonify
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3 , get_expert_1, update_expert_1 
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
 
@@ -273,6 +273,36 @@ def add_expert_1():
     state = int(state)
 
     create_res = add_expert_1_data(state, actions)
+    print(create_res)
+
+    return {
+        'create Response' : create_res
+    }
+
+#get expert 1 data
+
+@recommendation_api.route('/api/v3/recommendations/get_expert_1', methods=['GET'])
+def get_expert_1_v3():
+    state = request.args.get('state')
+    state = int(state)
+    actions = get_expert_1(state)
+    print(actions)
+
+    return jsonify({'actions': actions})
+
+
+#update expert 1 data
+
+@recommendation_api.route('/api/v3/recommendations/update_expert_1', methods=['POST'])
+def update_expert_1_v3():
+    data = request.get_json()
+    
+    state = data.get('state')
+    actions = data.get('actions')
+    
+    state = int(state)
+
+    create_res = update_expert_1(state, actions)
     print(create_res)
 
     return {
