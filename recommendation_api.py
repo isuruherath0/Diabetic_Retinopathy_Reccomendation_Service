@@ -2,6 +2,7 @@ from flask import request, Blueprint ,jsonify
 from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3 , get_expert_1, update_expert_1 
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
+from flask_cors import CORS, cross_origin
 
 
 recommendation_api = Blueprint('recommendation_api', __name__)
@@ -178,6 +179,7 @@ def new_user_v2():
 #Update Q value V2
 
 @recommendation_api.route('/api/v2/recommendations/updateq', methods=['POST'])
+@cross_origin()
 def updateq_v2():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
@@ -214,6 +216,7 @@ def create_action_v2():
 #Get all actions
 
 @recommendation_api.route('/api/v2/recommendations/get_all_actions', methods=['GET'])
+@cross_origin()
 def get_all_actions_v2():
     actions = get_all_actions()
     print(actions)
@@ -248,6 +251,7 @@ def insert_version_v3():
 #Create  and initialize new user V3
 
 @recommendation_api.route('/api/v3/recommendations/new_user', methods=['POST'])
+@cross_origin()
 def new_user_v3():
     user_id = request.args.get('user_id')
     create_res = create_table('qtable' + user_id)
@@ -313,6 +317,7 @@ def update_expert_1_v3():
 #Get Reccmondation through state V3
 
 @recommendation_api.route('/api/v3/recommendations', methods=['GET'])
+@cross_origin()
 def recommendation_v3():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
@@ -326,6 +331,7 @@ def recommendation_v3():
 #Get Reccmondation through parameters V2
 
 @recommendation_api.route('/api/v3/recommendations/get', methods=['GET'])
+@cross_origin()
 def getrecommendation_v3():
     user_id = request.args.get('user_id')
     vegetarian = request.args.get('vegetarian')
@@ -358,6 +364,7 @@ def getrecommendation_v3():
 # Add new actions
 
 @recommendation_api.route('/api/v3/recommendations/create_action', methods=['POST'])
+@cross_origin()
 def create_action_v3():
     data = request.get_json()
     
