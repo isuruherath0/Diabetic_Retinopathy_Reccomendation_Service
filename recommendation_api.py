@@ -216,7 +216,7 @@ def create_action_v2():
 #Get all actions
 
 @recommendation_api.route('/api/v2/recommendations/get_all_actions', methods=['GET'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def get_all_actions_v2():
     actions = get_all_actions()
     print(actions)
