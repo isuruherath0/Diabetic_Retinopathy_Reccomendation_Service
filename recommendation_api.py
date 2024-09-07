@@ -103,6 +103,7 @@ def getrecommendation():
 #get cumulative reward
 
 @recommendation_api.route('/api/recommendations/get_cum_reward', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_cum_reward():
     user_id = request.args.get('user_id')
 
@@ -179,7 +180,7 @@ def new_user_v2():
 #Update Q value V2
 
 @recommendation_api.route('/api/v2/recommendations/updateq', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def updateq_v2():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
@@ -251,7 +252,7 @@ def insert_version_v3():
 #Create  and initialize new user V3
 
 @recommendation_api.route('/api/v3/recommendations/new_user', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def new_user_v3():
     user_id = request.args.get('user_id')
     create_res = create_table('qtable' + user_id)
@@ -317,7 +318,7 @@ def update_expert_1_v3():
 #Get Reccmondation through state V3
 
 @recommendation_api.route('/api/v3/recommendations', methods=['GET'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def recommendation_v3():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
@@ -331,7 +332,7 @@ def recommendation_v3():
 #Get Reccmondation through parameters V2
 
 @recommendation_api.route('/api/v3/recommendations/get', methods=['GET'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def getrecommendation_v3():
     user_id = request.args.get('user_id')
     vegetarian = request.args.get('vegetarian')
@@ -364,7 +365,7 @@ def getrecommendation_v3():
 # Add new actions
 
 @recommendation_api.route('/api/v3/recommendations/create_action', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def create_action_v3():
     data = request.get_json()
     
