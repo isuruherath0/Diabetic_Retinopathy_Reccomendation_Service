@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS, cross_origin
 from recommendation_api import recommendation_api
-# from services.recommend_service.mongodb_service import get_action_from_version , update_action_from_version ,get_all_action_data ,get_expert_1_data
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
