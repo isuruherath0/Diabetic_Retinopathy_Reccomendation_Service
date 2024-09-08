@@ -297,12 +297,6 @@ def add_expert_1_data(stateno , action_array):
             }
         return response
 
-#get expert 1 data when state id is given
-
-def get_expert_1(stateno):
-
-    return get_expert_1_data(stateno)
-
 
 #choose action v3
 
@@ -329,6 +323,8 @@ def choose_action_v3(table_name, state):
 
     else:  #EXPLOIT
         action = get_action_with_max_q(table_name, state)
+
+
 
     print(action)
     return action
