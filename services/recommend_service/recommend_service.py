@@ -324,6 +324,10 @@ def choose_action_v3(table_name, state):
     else:  #EXPLOIT
         action = get_action_with_max_q(table_name, state)
 
+        if action == 0:
+            action_set = rule_based_reccomondation_v3(state)
+            action = action_set[np.random.randint(0, len(action_set))]
+
 
 
     print(action)
