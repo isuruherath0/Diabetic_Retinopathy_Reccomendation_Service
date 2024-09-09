@@ -370,3 +370,8 @@ def add_action_v3(action_name , state_arrray):
 
     return { 'update_row_response' : update_row_response , 'mongo_response' : mongo_response}
 
+#get expert 1 data when state id is given
+
+def get_expert_1(stateno):
+
+    return get_expert_1_data(stateno)
