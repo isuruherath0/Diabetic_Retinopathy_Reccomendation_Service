@@ -23,8 +23,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t <your-docker-username>/diabetic-retinopathy-app:latest .
-          docker push <your-docker-username>/diabetic-retinopathy-app:latest
+          docker build -t rexhonz77/diabetic-retinopathy-app:latest .
+          docker push rexhonz77/diabetic-retinopathy-app:latest
 
   deploy:
     needs: build
