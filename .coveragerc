@@ -1,0 +1,6 @@
+[run]
+omit =
+    services/recommend_service/mongodb_service.py
+    services/recommend_service/state_manager.py
+    test_app.py
+    **/rule_based.py
