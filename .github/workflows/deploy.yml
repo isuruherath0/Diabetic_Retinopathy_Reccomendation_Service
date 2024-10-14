@@ -35,9 +35,12 @@ jobs:
         with:
           version: 'latest'
 
+      - name: Decode kubeconfig and set it up
+        run: |
+          echo "${{ secrets.KUBECONFIG}}" | base64 --decode > kubeconfig
+          export KUBECONFIG=$PWD/kubeconfig
+
       - name: Deploy to Kubernetes
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
