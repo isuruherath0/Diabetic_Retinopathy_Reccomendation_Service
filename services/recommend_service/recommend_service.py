@@ -328,6 +328,10 @@ def choose_action_v3(table_name, state):
             action_set = rule_based_reccomondation_v3(state)
             action = action_set[np.random.randint(0, len(action_set))]
 
+        if action == 0:
+            action_set = rule_based_reccomondation_v3(state)
+            action = action_set[np.random.randint(0, len(action_set))]
+
 
 
     print(action)
