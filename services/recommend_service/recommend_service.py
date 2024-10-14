@@ -32,7 +32,7 @@ def choose_action_v2(table_name, state):
         else :
             action_set = rule_based_approach_for_reccomondation(state)
    
-        #get a random value from the action_set array
+        #get a random value from the action_set array .
 
         action = action_set[np.random.randint(0, len(action_set))]
 
