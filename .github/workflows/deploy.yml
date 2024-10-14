@@ -35,6 +35,9 @@ jobs:
         with:
           version: 'latest'
 
+      - name: List files for debugging
+        run: ls -R
+
       - name: Decode kubeconfig and set it up
         run: |
           echo "${{ secrets.KUBECONFIG}}" | base64 --decode > kubeconfig
