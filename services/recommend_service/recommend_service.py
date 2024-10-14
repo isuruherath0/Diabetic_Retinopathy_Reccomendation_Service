@@ -24,7 +24,7 @@ def choose_action_v2(table_name, state):
     state = int(state)
     print (episodes)
 
-    if episodes < 10:   #EXPLORE
+    if episodes < 10:   #EXPLORE .
 
         if episodes < 4:
              action_set = rule_based_reccomondation(state)
