@@ -234,3 +234,19 @@ def update_expert_1_data(state_id, action_array):
     collection = db['expert_1']
 
     collection.update_one({"_id": state_id}, {"$set": {"action_array": action_array}})
+
+
+#check if user exists
+    
+def check_user_exists(userid):
+        
+    client = MongoDbSingleton.get_instance()
+    db = client['research_RL']
+    collection = db['userdata']
+        
+    user = collection.find_one({"_id": userid})
+        
+    if user:
+        return True
+    else:
+        return False

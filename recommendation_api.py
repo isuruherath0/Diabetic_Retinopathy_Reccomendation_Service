@@ -1,5 +1,5 @@
 from flask import request, Blueprint ,jsonify
-from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3
+from services.recommend_service.recommend_service import choose_action , create_table, init_table, update_q , get_cum_q , choose_action_v2 ,init_table_v2 ,update_q_sarsa ,create_action ,get_all_actions , add_version , init_table_v3 ,add_expert_1_data ,choose_action_v3 ,add_action_v3,check_user_exists_v2
 from services.recommend_service.state_manager import state_manager ,state_manager_v2
 from services.recommend_service.action_manager import action_manager , action_manager_v2
 from flask_cors import CORS, cross_origin
@@ -345,3 +345,22 @@ def create_action_v3():
     create_res = add_action_v3(action_name, states_array)
 
     return create_res
+
+
+#check if user exists API
+@recommendation_api.route('/api/v3/user/check', methods=['GET'])
+def check_user_exists_API():
+    user_id = request.args.get('user_id')
+
+    tablename = 'qtable' + user_id
+
+    user_exists = check_user_exists_v2(tablename)
+
+    if user_exists:
+        exist_val = 1
+    else:
+        exist_val = 0
+
+    return {
+        'user_existance' : exist_val
+    }

@@ -1,6 +1,6 @@
 from decimal import Decimal
 from services.recommend_service.dynamodb_service import create_Dynamo_table, init_dynamo_table, get_q_from_dynamo , get_action_with_max_q , update_q_value_in_q_table , init_dynamo_table_with_zero ,insert_new_rows_in_all_tables ,update_q_in_all_tables
-from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data ,update_expert_1_data ,get_expert_1_data
+from services.recommend_service.mongodb_service import insert_user_data, get_user_data , update_epsilon ,insert_action_data ,get_all_action_data , insert_version ,get_action_from_version , insert_expert_1_data ,update_expert_1_data ,get_expert_1_data, check_user_exists
 from services.recommend_service.reward_manager import update_cumq
 from services.recommend_service.state_manager import next_state_calculator
 from services.recommend_service.Controllers.rule_based import rule_based_reccomondation ,rule_based_approach_for_reccomondation ,rule_based_reccomondation_v3 ,rule_based_approach_for_reccomondation_v3
@@ -366,3 +366,10 @@ def add_action_v3(action_name , state_arrray):
 
     return { 'update_row_response' : update_row_response , 'mongo_response' : mongo_response}
 
+
+
+#check if user exists
+
+def check_user_exists_v2(table_name):
+
+    return check_user_exists(table_name)
