@@ -324,6 +324,10 @@ def choose_action_v3(table_name, state):
     else:  #EXPLOIT
         action = get_action_with_max_q(table_name, state)
 
+        if action == 0:
+            action_set = rule_based_reccomondation_v3(state)
+            action = action_set[np.random.randint(0, len(action_set))]
+
 
 
     print(action)
@@ -373,3 +377,9 @@ def add_action_v3(action_name , state_arrray):
 def check_user_exists_v2(table_name):
 
     return check_user_exists(table_name)
+
+
+#get expert 1 data when state id is given
+
+def get_expert_1(stateno):
+    return get_expert_1_data(stateno)
