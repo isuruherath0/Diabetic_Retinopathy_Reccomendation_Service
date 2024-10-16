@@ -16,6 +16,16 @@ def recommendation():
 
     print(state)
 
+    #return invalid if missing fields
+    if not user_id or not state:
+        return {'error': 'Missing user_id or state parameter'}, 400
+
+    #validate if state in an integer
+    try:
+        state = int(state)
+    except ValueError:
+        return {'error': 'State must be an integer'}, 400
+
 
     if state not in range(1, 4):
         return {'error': 'Invalid state value. State should be between 1 and 4'}, 400
@@ -54,7 +64,19 @@ def updateq():
     action = request.args.get('action')
     reward = request.args.get('reward')
 
-    print ('Update Q service called with params : ' + user_id + " " + state + " " + action + " " + reward )
+
+    #return invalid if missing fields
+    if not user_id or not state or not action or not reward:
+        return {'error': 'Missing user_id, state, action or reward parameter'}, 400
+    
+    # Validate if state, action, and reward are integers
+    try:
+        state = int(state)
+        action = int(action)
+    except ValueError:
+        return {'error': 'State, action, and reward must be integers'}, 400
+
+    # print ('Update Q service called with params : ' + user_id + " " + state + " " + action + " " + reward )
 
 
     update_res = update_q('qtable' + user_id, state, action, reward)
@@ -74,6 +96,36 @@ def getrecommendation():
     weight = request.args.get('weight')
     height = request.args.get('height')
     exersize_level = request.args.get('exersize_level')
+
+    #return invalid if missing fields
+    if not user_id or not vegetarian or not weight or not height or not exersize_level:
+        return {'error': 'Missing user_id, vegetarian, weight, height or exersize_level parameter'}, 400
+    
+    try:
+        vegetarian = int(vegetarian)
+        weight = float(weight)  # Supports both int and float inputs
+        height = float(height)
+        exersize_level = int(exersize_level)
+    except ValueError:
+        return {'error': 'Invalid input types. Check if values are numbers'}, 400
+    
+    #check if vegetarian is either 0 or 1 
+    if vegetarian not in [0, 1]:
+        return {'error': 'Invalid vegetarian value. Vegetarian should be either 0 or 1'}, 400
+    
+    #check if weight is between 0 and 200
+    if weight not in range(0, 201):
+        return {'error': 'Invalid weight value. Weight should be between 0 and 200'}, 400
+    
+    #check if height is between 0 and 200
+    if height not in range(0, 201):
+        return {'error': 'Invalid height value. Height should be between 0 and 200'}, 400
+    
+    #check if exersize_level is between 0 and 1
+    if exersize_level not in range(0, 3):
+        return {'error': 'Invalid exersize_level value. Exersize_level should be between 0 and 2'}, 400
+    
+
 
     print ("Finding state through state manager")
 
@@ -107,6 +159,10 @@ def getrecommendation():
 def get_cum_reward():
     user_id = request.args.get('user_id')
 
+    #return invalid if missing fields
+    if not user_id:
+        return {'error': 'Missing user_id parameter'}, 400
+
     cum_q = get_cum_q('qtable' + user_id)
     
     return {
@@ -123,6 +179,24 @@ def get_cum_reward():
 def recommendation_v2():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
+
+    #return invalid if missing fields
+    if not user_id or not state:
+        return {'error': 'Missing user_id or state parameter'}, 400
+    
+    # #return invalid if state is not an integer
+    
+    try:
+        state = int(state)
+    except ValueError:
+        return {'error': 'State must be an integer'}, 400
+    
+    #return invalid if state is not between 1 and 12
+
+    if state not in range(1, 13):
+        return {'error': 'Invalid state value. State should be between 1 and 12'}, 400
+
+
     action = choose_action_v2('qtable' + user_id, state)
     print(action)
 
@@ -141,6 +215,41 @@ def getrecommendation_v2():
     exersize_level = request.args.get('exersize_level')
     meal = request.args.get('meal')
 
+
+    #return invalid if missing fields
+    if not user_id or not vegetarian or not weight or not height or not exersize_level or not meal:
+        return {'error': 'Missing user_id, vegetarian, weight, height, exersize_level or meal parameter'}, 400
+    
+
+    try:
+        vegetarian = int(vegetarian)
+        weight = float(weight)  # Supports both int and float inputs
+        height = float(height)
+        exersize_level = int(exersize_level)
+        meal = int(meal)
+    except ValueError:
+        return {'error': 'Invalid input types. Check if values are numbers'}, 400
+
+    #check if vegetarian is either 0 or 1
+    if vegetarian not in [0, 1]:
+        return {'error': 'Invalid vegetarian value. Vegetarian should be either 0 or 1'}, 400
+    
+    #check if weight is between 0 and 200
+    if weight not in range(0, 201):
+        return {'error': 'Invalid weight value. Weight should be between 0 and 200'}, 400
+    
+    #check if height is between 0 and 200
+    if height not in range(0, 201):
+        return {'error': 'Invalid height value. Height should be between 0 and 200'}, 400
+    
+
+    #check if exersize_level is between 0 and 1
+    if exersize_level not in range(0, 3):
+        return {'error': 'Invalid exersize_level value. Exersize_level should be between 0 and 2'}, 400
+    
+    #check if meal is between 0 and 2
+    if meal not in range(0, 3):
+        return {'error': 'Invalid meal value. Meal should be between 0 and 2'},
 
     state = state_manager_v2(vegetarian, weight, height, exersize_level, meal)
 
@@ -186,6 +295,19 @@ def updateq_v2():
     state = request.args.get('state')
     action = request.args.get('action')
     reward = request.args.get('reward')
+
+    #return invalid if missing fields
+    if not user_id or not state or not action or not reward:
+        return {'error': 'Missing user_id, state, action or reward parameter'}, 400
+    
+
+    try:
+        state = int(state)
+        action = int(action)
+    except ValueError:
+        return {'error': 'State and action must be integers'}, 400
+    
+
     update_res = update_q_sarsa('qtable' + user_id, state, action, reward)
     print(update_res)
 
@@ -236,6 +358,12 @@ def insert_version_v3():
     version_no = request.args.get('version_no')
     states = request.args.get('states')
     actions = request.args.get('actions')
+
+
+    #return invalid if missing fields
+    if not version_no or not states or not actions:
+        return {'error': 'Missing version_no, states or actions parameter'}, 400
+    
 
     states = int(states)
     actions = int(actions)
@@ -292,6 +420,23 @@ def add_expert_1():
 def recommendation_v3():
     user_id = request.args.get('user_id')
     state = request.args.get('state')
+
+    #return invalid if missing fields
+    if not user_id or not state:
+        return {'error': 'Missing user_id or state parameter'}, 400
+    
+    # Validate if state is an integer
+    try:
+        state = int(state)
+    except ValueError:
+        return {'error': 'State, action, and reward must be integers'}, 400
+    
+    #return invalid if state is not between 1 and 12
+
+    if state not in range(1, 13):
+        return {'error': 'Invalid state value. State should be between 1 and 12'}, 400
+
+
     action = choose_action_v3('qtable' + user_id, state)
     print(action)
 
@@ -310,6 +455,19 @@ def getrecommendation_v3():
     height = request.args.get('height')
     exersize_level = request.args.get('exersize_level')
     meal = request.args.get('meal')
+
+    #return invalid if missing fields
+    if not user_id or not vegetarian or not weight or not height or not exersize_level or not meal:
+        return {'error': 'Missing user_id, vegetarian, weight, height, exersize_level or meal parameter'}, 400
+    
+    try :
+        vegetarian = int(vegetarian)
+        weight = float(weight)  # Supports both int and float inputs
+        height = float(height)
+        exersize_level = int(exersize_level)
+        meal = int(meal)
+    except ValueError:
+        return {'error': 'Invalid input types. Check if values are numbers'}, 400
 
 
     state = state_manager_v2(vegetarian, weight, height, exersize_level, meal)

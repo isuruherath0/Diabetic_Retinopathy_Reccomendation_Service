@@ -54,6 +54,19 @@ class RecommendationAPITest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('update Response', response.json)
 
+    #update Q value with missing parameters
+        
+    def test_update_q_value_missing_parameters(self):
+        """Test Q-value update endpoint with missing parameters"""
+        response = self.client.post('/api/recommendations/updateq', query_string={
+            'user_id': '123',
+            'state': '1',
+            'action': '2',
+            # Missing reward parameter
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Missing user_id, state, action or reward parameter', response.json['error'])
+
     def test_get_cumulative_reward(self):
         """Test cumulative reward retrieval"""
         response = self.client.get('/api/recommendations/get_cum_reward', query_string={
@@ -80,6 +93,17 @@ class RecommendationAPITest(unittest.TestCase):
     #     })
     #     self.assertEqual(response.status_code, 404)
     #     self.assertIn('User not found', response.json['error'])
+        
+    #get recommendation v1 with invalid state
+        
+    def test_get_recommendation_v1_invalid_state(self):
+        """Test /api/recommendations endpoint with invalid state."""
+        response = self.client.get('/api/recommendations', data={
+            'user_id': '123',
+            'state': 5  # Invalid state (out of range)
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid state value', response.json['error'])
 
     def test_get_all_actions_v2(self):
         """Test /api/v2/recommendations/get_all_actions to retrieve all actions."""
@@ -87,14 +111,14 @@ class RecommendationAPITest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('actions', response.json)
 
-    # def test_invalid_recommendation_v2(self):
-    #     """Test /api/v2/recommendations/get with missing parameters."""
-    #     response = self.client.get('/api/v2/recommendations/get', query_string={
-    #         'user_id': '123'
-    #         # Missing other required parameters like vegetarian, weight, etc.
-    #     })
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertIn('Missing required parameters', response.json['error'])
+    def test_invalid_recommendation_v2(self):
+        """Test /api/v2/recommendations/get with missing parameters."""
+        response = self.client.get('/api/v2/recommendations/get', query_string={
+            'user_id': '123'
+            # Missing other required parameters like vegetarian, weight, etc.
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Missing user_id, vegetarian, weight, height, exersize_level or meal parameter', response.json['error'])
 
     def test_get_recommendation_v2_with_parameters(self):
         """Test /api/v2/recommendations/get with valid parameters."""
@@ -134,6 +158,21 @@ class RecommendationAPITest(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
         self.assertIn('Recommended Meal ', response.json)
+
+    # get recommendation v3 with missing parameters
+        
+    def test_get_recommendation_v3_missing_parameters(self):
+        """Test /api/v3/recommendations/get with missing parameters."""
+        response = self.client.get('/api/v3/recommendations/get', query_string={
+            'user_id': '123',
+            'vegetarian': '0',
+            'weight': '70',
+            'height': '170',
+            'exersize_level': '1',
+            # Missing meal parameter
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Missing user_id, vegetarian, weight, height, exersize_level or meal parameter', response.json['error'])
 
     def test_update_q_value_v3(self):
         """Test /api/v3/recommendations/updateq for Q-value update."""
