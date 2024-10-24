@@ -12,7 +12,7 @@ recommendation_api = Blueprint('recommendation_api', __name__)
 @recommendation_api.route('/api/recommendations', methods=['GET'])
 def recommendation():
     user_id = request.form.get('user_id')
-    state = int(request.form.get('state'))
+    state = request.form.get('state')
 
     print(state)
 
@@ -75,6 +75,10 @@ def updateq():
         action = int(action)
     except ValueError:
         return {'error': 'State, action, and reward must be integers'}, 400
+    
+    #return invalid if state is not between 1 and 4
+    if state not in range(1, 4):
+        return {'error': 'Invalid state value. State should be between 1 and 4'}, 400
 
     # print ('Update Q service called with params : ' + user_id + " " + state + " " + action + " " + reward )
 

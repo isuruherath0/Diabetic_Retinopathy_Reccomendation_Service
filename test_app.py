@@ -67,6 +67,20 @@ class RecommendationAPITest(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn('Missing user_id, state, action or reward parameter', response.json['error'])
 
+    #update q value with invalid state
+        
+    def test_update_q_value_invalid_state(self):
+        """Test Q-value update endpoint with invalid state"""
+        response = self.client.post('/api/recommendations/updateq', query_string={
+            'user_id': '123',
+            'state': '5',
+            'action': '2',
+            'reward': '10'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid state value', response.json['error'])
+
+
     def test_get_cumulative_reward(self):
         """Test cumulative reward retrieval"""
         response = self.client.get('/api/recommendations/get_cum_reward', query_string={
@@ -93,6 +107,18 @@ class RecommendationAPITest(unittest.TestCase):
     #     })
     #     self.assertEqual(response.status_code, 404)
     #     self.assertIn('User not found', response.json['error'])
+        
+
+    #get recommendation v1 with missing parameters
+        
+    def test_get_recommendation_v1_missing_parameters(self):
+        """Test /api/recommendations endpoint with missing parameters."""
+        response = self.client.get('/api/recommendations', data={
+            'user_id': '123',
+            # Missing state parameter
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Missing user_id or state parameter', response.json['error'])
         
     #get recommendation v1 with invalid state
         
